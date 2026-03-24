@@ -85,42 +85,93 @@ body {
 
 .score-card {
   padding: 1rem;
+  background:
+    linear-gradient(180deg, #205733 0%, #173f26 100%),
+    repeating-linear-gradient(0deg, rgba(255, 255, 255, 0.02) 0 2px, rgba(0, 0, 0, 0.04) 2px 4px);
+  color: #effff6;
 }
 
-.score-card h2 {
-  margin: 0 0 0.8rem;
+.scoreboard-classic {
+  border: 2px solid rgba(220, 243, 228, 0.44);
+  border-radius: 0.45rem;
+  background: linear-gradient(180deg, #1d4d2d 0%, #13361f 100%);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.06);
+  font-family: "Verdana", "Tahoma", sans-serif;
 }
 
-.score-grid {
+.scoreboard-title {
+  padding: 0.4rem 0.6rem;
+  background: #d7f2df;
+  color: #123722;
+  font-size: 0.74rem;
+  text-transform: uppercase;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  border-bottom: 1px solid rgba(18, 55, 34, 0.28);
+}
+
+.scoreboard-mainline {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  padding: 0.58rem 0.7rem;
+  border-bottom: 1px solid rgba(214, 241, 224, 0.22);
+}
+
+.team-tag {
+  font-size: 1.04rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+}
+
+.scoreboard-mainline strong {
+  font-size: 1.45rem;
+  line-height: 1;
+  color: #f5fffa;
+}
+
+.scoreboard-meta-row {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  padding: 0.5rem 0.55rem;
+  gap: 0.4rem;
+  border-bottom: 1px solid rgba(214, 241, 224, 0.22);
+}
+
+.scoreboard-meta-row span,
+.scoreboard-over-row span {
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(226, 247, 233, 0.24);
+  border-radius: 0.25rem;
+  padding: 0.3rem 0.4rem;
+  font-size: 0.76rem;
+  text-align: center;
+}
+
+.scoreboard-meta-row b {
+  color: #c8f2d6;
+}
+
+.scoreboard-over-row {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 0.7rem;
-}
-
-.score-grid article {
-  background: #fbfffd;
-  border: 1px solid rgba(8, 82, 47, 0.14);
-  border-radius: 0.7rem;
-  padding: 0.65rem;
-}
-
-.score-grid span {
-  display: block;
-  font-size: 0.8rem;
-  opacity: 0.75;
-}
-
-.score-grid strong {
-  font-size: 1.15rem;
+  padding: 0.5rem 0.55rem 0.6rem;
+  gap: 0.4rem;
 }
 
 .style-selector {
-  margin-top: 1rem;
+  margin-top: 0.85rem;
+  border-top: 1px dashed rgba(220, 243, 228, 0.34);
+  padding-top: 0.7rem;
 }
 
 .style-selector p {
   margin: 0 0 0.5rem;
   font-weight: 700;
+  text-transform: uppercase;
+  font-size: 0.72rem;
+  letter-spacing: 0.07em;
+  color: #d6f3e0;
 }
 
 .style-buttons {
@@ -131,13 +182,16 @@ body {
 
 .style-buttons button {
   padding: 0.55rem;
-  background: #dff0e5;
-  color: #164d34;
+  background: linear-gradient(180deg, #e2f5e9 0%, #cce8d8 100%);
+  color: #183f2b;
+  border: 1px solid rgba(17, 58, 36, 0.2);
+  border-radius: 0.35rem;
 }
 
 .style-buttons button.active {
-  background: linear-gradient(160deg, var(--accent) 0%, var(--accent-strong) 100%);
-  color: #fafffc;
+  background: linear-gradient(180deg, #0f6f3b 0%, #094f2a 100%);
+  color: #f6fffa;
+  box-shadow: inset 0 0 0 1px rgba(225, 248, 233, 0.28);
 }
 
 .style-buttons button:disabled,
@@ -148,15 +202,23 @@ body {
 
 .outcome-strip {
   margin-top: 1rem;
-  background: #e8f6ee;
-  border-left: 6px solid #1f7a45;
-  border-radius: 0.6rem;
+  background: rgba(241, 255, 246, 0.12);
+  border-left: 4px solid #c6edd4;
+  border-radius: 0.35rem;
   padding: 0.65rem;
 }
 
 .outcome-strip span {
   display: block;
-  font-size: 0.8rem;
+  font-size: 0.72rem;
+  color: #caefd8;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.outcome-strip strong {
+  color: #f8fff9;
+  font-size: 1.05rem;
 }
 
 .ground-panel {
@@ -488,8 +550,8 @@ body {
     grid-template-columns: 1fr;
   }
 
-  .score-grid {
-    grid-template-columns: 1fr 1fr;
+  .scoreboard-mainline strong {
+    font-size: 1.3rem;
   }
 }
 
@@ -509,6 +571,11 @@ body {
 
   .ground {
     min-height: 230px;
+  }
+
+  .scoreboard-meta-row,
+  .scoreboard-over-row {
+    grid-template-columns: 1fr;
   }
 
   .batsman-sprite {

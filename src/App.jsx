@@ -28,6 +28,7 @@ const BOWLER_BOWL_FPS = 12;
 const BOWLER_IDLE_FPS = 8;
 const BOWLER_BALL_RELEASE_FRAME = 5;
 const BOWLER_BALL_RELEASE_DELAY_MS = Math.round((BOWLER_BALL_RELEASE_FRAME / BOWLER_BOWL_FPS) * 1000);
+// Resolve outcome only after release delay + full travel so contact happens near the batter.
 const BALL_CONTACT_DELAY_MS = BOWLER_BALL_RELEASE_DELAY_MS + DELIVERY_DURATION_MS;
 
 const ACTION_ROW = {
@@ -122,6 +123,7 @@ function oversText(ballsBowled) {
 function getOutcomeFromSlider(sliderPosition, segments) {
   let cumulative = 0;
 
+  // Cumulative scan maps slider's [0..1] position to one probability segment.
   for (const segment of segments) {
     cumulative += segment.probability;
     if (sliderPosition <= cumulative) {
@@ -486,6 +488,8 @@ export default function App() {
   };
 
   const ballsRemaining = TOTAL_BALLS - ballsBowled;
+  const completedOvers = ballsBowled / BALLS_PER_OVER;
+  const currentRunRate = completedOvers > 0 ? runs / completedOvers : 0;
 
   return (
     <div className="page-shell">
@@ -501,28 +505,31 @@ export default function App() {
 
       <main className="game-layout">
         <section className="score-card">
-          <h2>Scoreboard</h2>
-          <div className="score-grid">
-            <article>
-              <span>Runs</span>
-              <strong>{runs}</strong>
-            </article>
-            <article>
-              <span>Wickets</span>
+          <div className="scoreboard-classic" role="status" aria-live="polite">
+            <div className="scoreboard-title">Live Match Score</div>
+            <div className="scoreboard-mainline">
+              <span className="team-tag">PAK XI</span>
               <strong>
-                {wickets}/{MAX_WICKETS}
+                {runs}/{wickets}
               </strong>
-            </article>
-            <article>
-              <span>Overs</span>
-              <strong>
-                {oversText(ballsBowled)} / {TOTAL_OVERS}.0
-              </strong>
-            </article>
-            <article>
-              <span>Balls Left</span>
-              <strong>{Math.max(0, ballsRemaining)}</strong>
-            </article>
+            </div>
+            <div className="scoreboard-meta-row">
+              <span>
+                <b>O</b> {oversText(ballsBowled)}
+              </span>
+              <span>
+                <b>RR</b> {currentRunRate.toFixed(2)}
+              </span>
+              <span>
+                <b>Balls</b> {Math.max(0, ballsRemaining)}
+              </span>
+            </div>
+            <div className="scoreboard-over-row">
+              <span>Innings: 1st</span>
+              <span>
+                Max Overs: {TOTAL_OVERS}.0
+              </span>
+            </div>
           </div>
 
           <div className="style-selector">

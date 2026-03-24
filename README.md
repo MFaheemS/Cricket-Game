@@ -2,6 +2,53 @@
 
 A single-player React cricket batting game for CS-4032 Assignment #02.
 
+## React Requirement Compliance
+
+This assignment is implemented using React (Vite + React runtime):
+
+- Entry point mounts a React root in [src/main.jsx](src/main.jsx).
+- Main game logic and UI are implemented as a React component in [src/App.jsx](src/App.jsx).
+- State and rendering are managed with React hooks (`useState`, `useEffect`, `useMemo`, `useRef`).
+
+## Rubric Coverage Checklist
+
+### Game Logic and Probability (30)
+
+- Aggressive batting distribution is defined and sums to 1.00.
+- Defensive batting distribution is defined and sums to 1.00.
+- Power-bar segments are proportional to probabilities.
+- Slider timing maps directly to an outcome via cumulative probability mapping.
+
+### UI / 2D Design and Animation (30)
+
+- Side-view cricket field with visible batsman, bowler, wickets, and ball.
+- Scoreboard shows runs, wickets, overs, and balls left with live updates.
+- Batsman sprite animations are triggered by outcomes (idle/four/six/dot/out).
+- Bowler sprite has idle and delivery sequences with timed ball release.
+- Power bar has segmented outcomes, live moving slider, and visual distinction.
+
+### JavaScript / React (20)
+
+- Game flow uses modular helper functions for probability and animation logic.
+- State handling tracks runs, wickets, balls, game phase, sprites, and ball states.
+
+### Code Quality (10)
+
+- Meaningful names for states/constants/helpers.
+- Inline comments and structured constants for timing/probability behavior.
+- GitHub commit quality requirement should be completed in repository history by student.
+
+### Documentation (10)
+
+- Include required screenshots in final report/PDF.
+- Explain probability mapping (cumulative segment selection from slider position).
+- Explain animation synchronization (bowler release frame, delivery, shot result).
+
+### Bonus (Up to 10)
+
+- Commentary system includes multiple contextual lines per outcome.
+- UI polish includes themed controls, cards, and power-bar styling.
+
 ## Features
 
 - 2 overs (12 balls) innings with 2 wickets.
