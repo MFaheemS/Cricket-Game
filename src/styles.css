@@ -1,0 +1,574 @@
+:root {
+  --bg-sky: #dff6eb;
+  --bg-field: #1c8c4f;
+  --bg-field-dark: #0f5f33;
+  --card: #f4fff8;
+  --card-soft: #e7f8ee;
+  --ink: #0e2e1f;
+  --accent: #046a38;
+  --accent-strong: #00853f;
+  --accent-deep: #03492a;
+  --warning: #9b2226;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: "Trebuchet MS", "Gill Sans", sans-serif;
+  color: var(--ink);
+  background:
+    radial-gradient(circle at 16% 8%, #ffffff 0%, #e7ffef 26%, transparent 62%),
+    radial-gradient(circle at 86% 16%, #f2fff6 0%, #d2f5dd 34%, transparent 68%),
+    linear-gradient(180deg, #e6f9ef 0%, #caefd8 46%, #edf9f0 100%);
+  min-height: 100vh;
+}
+
+.page-shell {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 1rem 1rem 2rem;
+}
+
+.game-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.game-header h1 {
+  margin: 0;
+  font-size: clamp(1.4rem, 3vw, 2rem);
+}
+
+.game-header p {
+  margin: 0.3rem 0 0;
+  opacity: 0.8;
+}
+
+.restart-btn,
+.shot-btn,
+.style-buttons button {
+  border: 0;
+  border-radius: 0.65rem;
+  font-size: 0.95rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.restart-btn {
+  background: linear-gradient(160deg, var(--accent-deep) 0%, var(--accent) 100%);
+  color: #fff;
+  padding: 0.65rem 1rem;
+  box-shadow: 0 8px 20px rgba(5, 81, 46, 0.28);
+}
+
+.game-layout {
+  display: grid;
+  grid-template-columns: 320px 1fr;
+  gap: 1rem;
+}
+
+.score-card,
+.ground-panel,
+.powerbar-section,
+.game-over {
+  background: var(--card);
+  border-radius: 1rem;
+  border: 2px solid rgba(6, 91, 52, 0.15);
+  box-shadow: 0 10px 24px rgba(7, 63, 39, 0.12);
+}
+
+.score-card {
+  padding: 1rem;
+}
+
+.score-card h2 {
+  margin: 0 0 0.8rem;
+}
+
+.score-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.7rem;
+}
+
+.score-grid article {
+  background: #fbfffd;
+  border: 1px solid rgba(8, 82, 47, 0.14);
+  border-radius: 0.7rem;
+  padding: 0.65rem;
+}
+
+.score-grid span {
+  display: block;
+  font-size: 0.8rem;
+  opacity: 0.75;
+}
+
+.score-grid strong {
+  font-size: 1.15rem;
+}
+
+.style-selector {
+  margin-top: 1rem;
+}
+
+.style-selector p {
+  margin: 0 0 0.5rem;
+  font-weight: 700;
+}
+
+.style-buttons {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.5rem;
+}
+
+.style-buttons button {
+  padding: 0.55rem;
+  background: #dff0e5;
+  color: #164d34;
+}
+
+.style-buttons button.active {
+  background: linear-gradient(160deg, var(--accent) 0%, var(--accent-strong) 100%);
+  color: #fafffc;
+}
+
+.style-buttons button:disabled,
+.shot-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.outcome-strip {
+  margin-top: 1rem;
+  background: #e8f6ee;
+  border-left: 6px solid #1f7a45;
+  border-radius: 0.6rem;
+  padding: 0.65rem;
+}
+
+.outcome-strip span {
+  display: block;
+  font-size: 0.8rem;
+}
+
+.ground-panel {
+  padding: 1rem;
+}
+
+.ground {
+  position: relative;
+  --playfield-rise: 4.7%;
+  width: 100%;
+  aspect-ratio: 3 / 2;
+  min-height: 280px;
+  max-height: 430px;
+  border-radius: 1rem;
+  overflow: hidden;
+  background: #7fb2dc url("/background.png") center 57% / cover no-repeat;
+}
+
+.horizon {
+  display: none;
+}
+
+.pitch-strip {
+  position: absolute;
+  left: 12%;
+  right: 12%;
+  bottom: calc(16% + var(--playfield-rise));
+  height: 17%;
+  border-radius: 16px;
+  background: rgba(255, 204, 138, 0.08);
+  border: 1px solid rgba(139, 84, 38, 0.18);
+}
+
+.wicket {
+  position: absolute;
+  bottom: calc(16.8% + var(--playfield-rise));
+  width: 38px;
+  height: 56px;
+  z-index: 5;
+}
+
+.wicket .stump {
+  position: absolute;
+  bottom: 0;
+  width: 4px;
+  height: 52px;
+  background: #f7f7f7;
+  border-radius: 2px;
+  transition: transform 0.22s ease, opacity 0.22s ease;
+}
+
+.wicket .stump-1 {
+  left: 4px;
+}
+
+.wicket .stump-2 {
+  left: 16px;
+}
+
+.wicket .stump-3 {
+  left: 28px;
+}
+
+.wicket .bail {
+  position: absolute;
+  top: 0;
+  height: 4px;
+  width: 14px;
+  background: #fff7de;
+  border-radius: 6px;
+  transition: transform 0.22s ease, opacity 0.22s ease;
+}
+
+.wicket .bail-1 {
+  left: 3px;
+}
+
+.wicket .bail-2 {
+  left: 16px;
+}
+
+.wicket-batsman {
+  left: 14%;
+}
+
+.wicket-bowler {
+  right: 14%;
+}
+
+.wicket-batsman.broken .stump-1 {
+  transform: translate(-10px, -10px) rotate(-24deg);
+  opacity: 0.45;
+}
+
+.wicket-batsman.broken .stump-2 {
+  transform: translate(3px, -15px) rotate(17deg);
+  opacity: 0.5;
+}
+
+.wicket-batsman.broken .stump-3 {
+  transform: translate(13px, -9px) rotate(28deg);
+  opacity: 0.5;
+}
+
+.wicket-batsman.broken .bail-1 {
+  transform: translate(-13px, -20px) rotate(-26deg);
+  opacity: 0;
+}
+
+.wicket-batsman.broken .bail-2 {
+  transform: translate(14px, -22px) rotate(31deg);
+  opacity: 0;
+}
+
+.batsman-sprite {
+  position: absolute;
+  left: 18%;
+  bottom: calc(16% + var(--playfield-rise));
+  image-rendering: auto;
+  filter: drop-shadow(0 8px 6px rgba(0, 0, 0, 0.2));
+  transform: scale(0.92);
+  transform-origin: bottom left;
+  z-index: 4;
+}
+
+.bowler-sprite {
+  position: absolute;
+  right: 17.5%;
+  bottom: calc(17% + var(--playfield-rise));
+  transform: translateX(50%) scale(0.5);
+  transform-origin: bottom center;
+  image-rendering: auto;
+  filter: drop-shadow(0 8px 6px rgba(0, 0, 0, 0.2));
+  z-index: 4;
+}
+
+.ball {
+  position: absolute;
+  width: 11px;
+  height: 11px;
+  border-radius: 50%;
+  left: 81%;
+  bottom: calc(24% + var(--playfield-rise));
+  background: #e63946;
+  box-shadow:
+    inset -2px -2px 0 rgba(0, 0, 0, 0.2),
+    0 2px 2px rgba(0, 0, 0, 0.25);
+  z-index: 6;
+}
+
+.ball.depth-front {
+  z-index: 7;
+  --lane-lift: 2.5%;
+}
+
+.ball.depth-back {
+  z-index: 3;
+  --lane-lift: -1.5%;
+  filter: saturate(0.85);
+}
+
+.ball.delivery {
+  animation: bowl-delivery 0.82s linear forwards;
+}
+
+.ball.shot-ground {
+  animation: ball-shot-arc 1.05s ease-out forwards;
+}
+
+.ball.shot-four {
+  animation: ball-shot-arc 1.05s ease-out forwards;
+}
+
+.ball.shot-six {
+  animation: ball-shot-arc 1.05s ease-out forwards;
+}
+
+.ball.shot-out {
+  animation: ball-out-shot 0.55s linear forwards;
+}
+
+.commentary {
+  margin: 0.8rem 0 0;
+  background: linear-gradient(180deg, #edf9f2 0%, #e2f4ea 100%);
+  border-left: 4px solid var(--accent);
+  border-radius: 0.6rem;
+  padding: 0.7rem;
+  min-height: 52px;
+}
+
+.powerbar-section {
+  margin-top: 1rem;
+  padding: 1rem;
+}
+
+.powerbar-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+}
+
+.powerbar-head h3 {
+  margin: 0;
+}
+
+.shot-btn {
+  background: linear-gradient(160deg, #00853f 0%, #046a38 100%);
+  color: #fff;
+  padding: 0.65rem 1rem;
+  box-shadow: 0 8px 18px rgba(5, 81, 46, 0.26);
+}
+
+.powerbar-wrapper {
+  margin-top: 0.85rem;
+  position: relative;
+  padding-top: 14px;
+}
+
+.powerbar {
+  width: 100%;
+  height: 44px;
+  display: flex;
+  border-radius: 0.55rem;
+  overflow: hidden;
+  border: 2px solid rgba(4, 88, 50, 0.22);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.24);
+}
+
+.segment {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.75rem;
+  color: #fff;
+  font-weight: 700;
+  min-width: 14px;
+}
+
+.slider {
+  position: absolute;
+  top: 0;
+  transform: translateX(-50%);
+  width: 4px;
+  height: 58px;
+  background: #052a18;
+  box-shadow: 0 0 0 2px #e9fff2;
+}
+
+.legend {
+  margin-top: 0.75rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  font-size: 0.85rem;
+}
+
+.legend span {
+  background: var(--card-soft);
+  border-radius: 0.4rem;
+  padding: 0.2rem 0.45rem;
+  border: 1px solid rgba(8, 82, 47, 0.14);
+}
+
+.game-over {
+  margin-top: 1rem;
+  padding: 1rem;
+  text-align: center;
+  border: 2px solid rgba(4, 106, 56, 0.28);
+}
+
+.game-over h2 {
+  margin: 0;
+  color: var(--warning);
+}
+
+@keyframes bowl-ball {
+  from {
+    top: 44px;
+  }
+  to {
+    top: 240px;
+  }
+}
+
+@keyframes bowl-delivery {
+  0% {
+    left: 81%;
+    bottom: calc(24% + var(--playfield-rise));
+  }
+  65% {
+    left: 48%;
+    bottom: calc(28% + var(--playfield-rise));
+  }
+  100% {
+    left: 23.5%;
+    bottom: calc(24% + var(--playfield-rise));
+  }
+}
+
+@keyframes ball-shot-arc {
+  0% {
+    left: 23.5%;
+    bottom: calc(24% + var(--playfield-rise));
+  }
+  45% {
+    left: var(--shot-mid-x, 8%);
+    bottom: calc(var(--shot-peak, 31%) + var(--lane-lift, 0%) + var(--playfield-rise));
+  }
+  100% {
+    left: var(--shot-end-x, -12%);
+    bottom: calc(var(--shot-end, 24%) + var(--lane-lift, 0%) + var(--playfield-rise));
+  }
+}
+
+@keyframes ball-out-shot {
+  0% {
+    left: 23.5%;
+    bottom: calc(24% + var(--playfield-rise));
+  }
+  100% {
+    left: 16%;
+    bottom: calc(24% + var(--playfield-rise));
+  }
+}
+
+@media (max-width: 920px) {
+  .game-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .score-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+@media (max-width: 560px) {
+  .page-shell {
+    padding: 0.75rem;
+  }
+
+  .score-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .powerbar-head {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .ground {
+    min-height: 230px;
+  }
+
+  .batsman-sprite {
+    left: 15.5%;
+    bottom: calc(15.5% + var(--playfield-rise));
+    transform: scale(0.82);
+  }
+
+  .wicket-batsman {
+    left: 11%;
+  }
+
+  .wicket-bowler {
+    right: 11%;
+  }
+
+  .bowler-sprite {
+    right: 14.5%;
+    bottom: calc(16% + var(--playfield-rise));
+    transform: translateX(50%) scale(0.4);
+  }
+
+  @keyframes bowl-delivery {
+    from {
+      left: 79%;
+      bottom: calc(24% + var(--playfield-rise));
+    }
+    65% {
+      left: 47%;
+      bottom: calc(27% + var(--playfield-rise));
+    }
+    to {
+      left: 22%;
+      bottom: calc(24% + var(--playfield-rise));
+    }
+  }
+
+  @keyframes ball-shot-arc {
+    0% {
+      left: 22%;
+      bottom: calc(24% + var(--playfield-rise));
+    }
+    45% {
+      left: var(--shot-mid-x, 8%);
+      bottom: calc(var(--shot-peak, 31%) + var(--lane-lift, 0%) + var(--playfield-rise));
+    }
+    100% {
+      left: var(--shot-end-x, -12%);
+      bottom: calc(var(--shot-end, 24%) + var(--lane-lift, 0%) + var(--playfield-rise));
+    }
+  }
+
+  @keyframes ball-out-shot {
+    0% {
+      left: 22%;
+      bottom: calc(24% + var(--playfield-rise));
+    }
+    100% {
+      left: 13%;
+      bottom: calc(24% + var(--playfield-rise));
+    }
+  }
+}
