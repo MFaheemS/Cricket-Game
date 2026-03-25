@@ -6,6 +6,7 @@ const TOTAL_BALLS = TOTAL_OVERS * BALLS_PER_OVER;
 const MAX_WICKETS = 2;
 const DELIVERY_DURATION_MS = 820;
 const SHOT_ANIMATION_DURATION_MS = 1050;
+const DEFAULT_COMMENTARY = "Pick a style, watch the slider, and play your shot.";
 
 const SPRITE_SHEET = "/cricketer_sprite.png";
 const SPRITE_SHEET_WIDTH = 2000;
@@ -44,7 +45,16 @@ const ACTION_FRAME_SEQUENCE = {
   four: [0, 1, 2, 3, 4, 5, 6, 7],
   six: [0, 1, 2, 3, 4, 5, 6, 7],
   dot: [0, 1, 2, 3, 4, 5, 6, 7],
-  out: [0, 1, 2, 3, 4, 5, 6, 7]
+  // Hold the last out frame briefly so the dismissal reads clearly.
+  out: [0, 1, 2, 3, 4, 5, 6, 7, 7]
+};
+
+const ACTION_FRAME_DELAY_MS = {
+  idle: 145,
+  four: 90,
+  six: 90,
+  dot: 90,
+  out: 96
 };
 
 const BOWLER_ROW = {
@@ -225,7 +235,7 @@ export default function App() {
   const [sliderDirection, setSliderDirection] = useState(1);
   const [phase, setPhase] = useState("ready");
   const [lastOutcome, setLastOutcome] = useState("-");
-  const [commentary, setCommentary] = useState("Pick a style, watch the slider, and play your shot.");
+  const [commentary, setCommentary] = useState(DEFAULT_COMMENTARY);
   const [playerAction, setPlayerAction] = useState("idle");
   const [frameStep, setFrameStep] = useState(0);
   const [bowlerAction, setBowlerAction] = useState("idle");
@@ -244,6 +254,31 @@ export default function App() {
 
   const probabilities = useMemo(() => PROBABILITIES[battingStyle], [battingStyle]);
 
+  const clearAllTimers = () => {
+    const timers = [
+      resolveTimeoutRef,
+      readyTimeoutRef,
+      resetActionTimeoutRef,
+      stumpBreakTimeoutRef,
+      releaseBallTimeoutRef,
+      resetBowlerTimeoutRef
+    ];
+
+    timers.forEach((timerRef) => {
+      if (timerRef.current) {
+        clearTimeout(timerRef.current);
+        timerRef.current = null;
+      }
+    });
+  };
+
+  const resetBallVisualState = () => {
+    setBallMode("idle");
+    setBallDepthLane("front");
+    setBallFlightStyle({});
+    setIsBattingStumpBroken(false);
+  };
+
   const gameOver = ballsBowled >= TOTAL_BALLS || wickets >= MAX_WICKETS;
 
   useEffect(() => {
@@ -254,7 +289,7 @@ export default function App() {
 
   useEffect(() => {
     const sequence = ACTION_FRAME_SEQUENCE[playerAction] || ACTION_FRAME_SEQUENCE.idle;
-    const frameDelay = playerAction === "idle" ? 145 : 90;
+    const frameDelay = ACTION_FRAME_DELAY_MS[playerAction] ?? ACTION_FRAME_DELAY_MS.idle;
 
     setFrameStep(0);
 
@@ -314,24 +349,7 @@ export default function App() {
 
   useEffect(
     () => () => {
-      if (resolveTimeoutRef.current) {
-        clearTimeout(resolveTimeoutRef.current);
-      }
-      if (readyTimeoutRef.current) {
-        clearTimeout(readyTimeoutRef.current);
-      }
-      if (resetActionTimeoutRef.current) {
-        clearTimeout(resetActionTimeoutRef.current);
-      }
-      if (stumpBreakTimeoutRef.current) {
-        clearTimeout(stumpBreakTimeoutRef.current);
-      }
-      if (releaseBallTimeoutRef.current) {
-        clearTimeout(releaseBallTimeoutRef.current);
-      }
-      if (resetBowlerTimeoutRef.current) {
-        clearTimeout(resetBowlerTimeoutRef.current);
-      }
+      clearAllTimers();
     },
     []
   );
@@ -378,10 +396,7 @@ export default function App() {
     setPhase("bowling");
     setPlayerAction("idle");
     setBowlerAction("bowl");
-    setBallMode("idle");
-    setBallDepthLane("front");
-    setBallFlightStyle({});
-    setIsBattingStumpBroken(false);
+    resetBallVisualState();
 
     releaseBallTimeoutRef.current = setTimeout(() => {
       setBallMode("delivery");
@@ -426,7 +441,7 @@ export default function App() {
         setBallMode("shot-ground");
       }
 
-      if (!willGameEnd) {
+      if (!willGameEnd && !isWicket) {
         resetActionTimeoutRef.current = setTimeout(() => {
           setPlayerAction("idle");
         }, 700);
@@ -437,10 +452,8 @@ export default function App() {
           if (current === "gameOver") {
             return current;
           }
-          setBallMode("idle");
-          setBallDepthLane("front");
-          setBallFlightStyle({});
-          setIsBattingStumpBroken(false);
+          resetBallVisualState();
+          setPlayerAction("idle");
           return "ready";
         });
       }, SHOT_ANIMATION_DURATION_MS);
@@ -448,24 +461,7 @@ export default function App() {
   };
 
   const restartGame = () => {
-    if (resolveTimeoutRef.current) {
-      clearTimeout(resolveTimeoutRef.current);
-    }
-    if (readyTimeoutRef.current) {
-      clearTimeout(readyTimeoutRef.current);
-    }
-    if (resetActionTimeoutRef.current) {
-      clearTimeout(resetActionTimeoutRef.current);
-    }
-    if (stumpBreakTimeoutRef.current) {
-      clearTimeout(stumpBreakTimeoutRef.current);
-    }
-    if (releaseBallTimeoutRef.current) {
-      clearTimeout(releaseBallTimeoutRef.current);
-    }
-    if (resetBowlerTimeoutRef.current) {
-      clearTimeout(resetBowlerTimeoutRef.current);
-    }
+    clearAllTimers();
 
     setBattingStyle("Aggressive");
     setRuns(0);
@@ -475,15 +471,12 @@ export default function App() {
     setSliderDirection(1);
     setPhase("ready");
     setLastOutcome("-");
-    setCommentary("Pick a style, watch the slider, and play your shot.");
+    setCommentary(DEFAULT_COMMENTARY);
     setPlayerAction("idle");
     setFrameStep(0);
     setBowlerAction("idle");
     setBowlerFrameStep(0);
-    setBallMode("idle");
-    setBallDepthLane("front");
-    setBallFlightStyle({});
-    setIsBattingStumpBroken(false);
+    resetBallVisualState();
     setBallInstance((value) => value + 1);
   };
 

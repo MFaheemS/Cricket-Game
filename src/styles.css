@@ -1,3 +1,5 @@
+﻿@import url("https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800&family=Space+Grotesk:wght@500;700&display=swap");
+
 :root {
   --bg-sky: #dff6eb;
   --bg-field: #1c8c4f;
@@ -8,7 +10,14 @@
   --accent: #046a38;
   --accent-strong: #00853f;
   --accent-deep: #03492a;
+  --accent-calm: #1d5f8a;
+  --accent-warm: #d96d2f;
   --warning: #9b2226;
+  --surface-glow: rgba(255, 255, 255, 0.52);
+  --contact-x: 23.5%;
+  --delivery-start-x: 81%;
+  --delivery-mid-x: 48%;
+  --delivery-end-x: 23.5%;
 }
 
 * {
@@ -17,12 +26,12 @@
 
 body {
   margin: 0;
-  font-family: "Trebuchet MS", "Gill Sans", sans-serif;
+  font-family: "Outfit", "Segoe UI", sans-serif;
   color: var(--ink);
   background:
-    radial-gradient(circle at 16% 8%, #ffffff 0%, #e7ffef 26%, transparent 62%),
-    radial-gradient(circle at 86% 16%, #f2fff6 0%, #d2f5dd 34%, transparent 68%),
-    linear-gradient(180deg, #e6f9ef 0%, #caefd8 46%, #edf9f0 100%);
+    radial-gradient(circle at 16% 8%, #ffffff 0%, #edfff6 27%, transparent 63%),
+    radial-gradient(circle at 84% 18%, #fff8eb 0%, #ffe7cc 31%, transparent 67%),
+    linear-gradient(180deg, #e4f8ff 0%, #cbeadf 48%, #f1fff3 100%);
   min-height: 100vh;
 }
 
@@ -43,6 +52,8 @@ body {
 .game-header h1 {
   margin: 0;
   font-size: clamp(1.4rem, 3vw, 2rem);
+  font-family: "Space Grotesk", "Outfit", sans-serif;
+  letter-spacing: 0.01em;
 }
 
 .game-header p {
@@ -57,14 +68,23 @@ body {
   border-radius: 0.65rem;
   font-size: 0.95rem;
   font-weight: 700;
+  font-family: "Space Grotesk", "Outfit", sans-serif;
   cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, filter 0.2s ease;
 }
 
 .restart-btn {
-  background: linear-gradient(160deg, var(--accent-deep) 0%, var(--accent) 100%);
+  background: linear-gradient(150deg, #1d5f8a 0%, #143b5b 100%);
   color: #fff;
   padding: 0.65rem 1rem;
-  box-shadow: 0 8px 20px rgba(5, 81, 46, 0.28);
+  box-shadow: 0 10px 18px rgba(18, 54, 82, 0.26);
+}
+
+.restart-btn:hover,
+.shot-btn:hover,
+.style-buttons button:hover {
+  transform: translateY(-1px);
+  filter: saturate(1.06);
 }
 
 .game-layout {
@@ -80,7 +100,7 @@ body {
   background: var(--card);
   border-radius: 1rem;
   border: 2px solid rgba(6, 91, 52, 0.15);
-  box-shadow: 0 10px 24px rgba(7, 63, 39, 0.12);
+  box-shadow: 0 12px 26px rgba(7, 63, 39, 0.11);
 }
 
 .score-card {
@@ -96,7 +116,7 @@ body {
   border-radius: 0.45rem;
   background: linear-gradient(180deg, #1d4d2d 0%, #13361f 100%);
   box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.06);
-  font-family: "Verdana", "Tahoma", sans-serif;
+  font-family: "Space Grotesk", "Outfit", sans-serif;
 }
 
 .scoreboard-title {
@@ -182,16 +202,16 @@ body {
 
 .style-buttons button {
   padding: 0.55rem;
-  background: linear-gradient(180deg, #e2f5e9 0%, #cce8d8 100%);
+  background: linear-gradient(180deg, #edf8ff 0%, #dcecf9 100%);
   color: #183f2b;
-  border: 1px solid rgba(17, 58, 36, 0.2);
+  border: 1px solid rgba(20, 63, 94, 0.2);
   border-radius: 0.35rem;
 }
 
 .style-buttons button.active {
-  background: linear-gradient(180deg, #0f6f3b 0%, #094f2a 100%);
+  background: linear-gradient(180deg, #d96d2f 0%, #9f4a1f 100%);
   color: #f6fffa;
-  box-shadow: inset 0 0 0 1px rgba(225, 248, 233, 0.28);
+  box-shadow: inset 0 0 0 1px rgba(255, 234, 215, 0.35);
 }
 
 .style-buttons button:disabled,
@@ -235,6 +255,7 @@ body {
   border-radius: 1rem;
   overflow: hidden;
   background: #7fb2dc url("/background.png") center 57% / cover no-repeat;
+  box-shadow: inset 0 0 0 1px var(--surface-glow);
 }
 
 .horizon {
@@ -384,20 +405,14 @@ body {
   animation: bowl-delivery 0.82s linear forwards;
 }
 
-.ball.shot-ground {
-  animation: ball-shot-arc 1.05s ease-out forwards;
-}
-
-.ball.shot-four {
-  animation: ball-shot-arc 1.05s ease-out forwards;
-}
-
+.ball.shot-ground,
+.ball.shot-four,
 .ball.shot-six {
-  animation: ball-shot-arc 1.05s ease-out forwards;
+  animation: ball-shot-arc 1.05s linear forwards;
 }
 
 .ball.shot-out {
-  animation: ball-out-shot 0.55s linear forwards;
+  animation: ball-out-shot 0.6s linear forwards;
 }
 
 .commentary {
@@ -423,13 +438,14 @@ body {
 
 .powerbar-head h3 {
   margin: 0;
+  font-family: "Space Grotesk", "Outfit", sans-serif;
 }
 
 .shot-btn {
-  background: linear-gradient(160deg, #00853f 0%, #046a38 100%);
+  background: linear-gradient(160deg, #d96d2f 0%, #b05321 100%);
   color: #fff;
   padding: 0.65rem 1rem;
-  box-shadow: 0 8px 18px rgba(5, 81, 46, 0.26);
+  box-shadow: 0 10px 18px rgba(150, 69, 26, 0.28);
 }
 
 .powerbar-wrapper {
@@ -493,40 +509,40 @@ body {
 .game-over h2 {
   margin: 0;
   color: var(--warning);
-}
-
-@keyframes bowl-ball {
-  from {
-    top: 44px;
-  }
-  to {
-    top: 240px;
-  }
+  font-family: "Space Grotesk", "Outfit", sans-serif;
 }
 
 @keyframes bowl-delivery {
   0% {
-    left: 81%;
+    left: var(--delivery-start-x);
     bottom: calc(24% + var(--playfield-rise));
   }
   65% {
-    left: 48%;
+    left: var(--delivery-mid-x);
     bottom: calc(28% + var(--playfield-rise));
   }
   100% {
-    left: 23.5%;
+    left: var(--delivery-end-x);
     bottom: calc(24% + var(--playfield-rise));
   }
 }
 
 @keyframes ball-shot-arc {
   0% {
-    left: 23.5%;
+    left: var(--contact-x);
     bottom: calc(24% + var(--playfield-rise));
   }
-  45% {
+  20% {
+    left: calc(var(--contact-x) + (var(--shot-mid-x, 8%) - var(--contact-x)) * 0.45);
+    bottom: calc(var(--shot-peak, 31%) * 0.55 + var(--lane-lift, 0%) + var(--playfield-rise));
+  }
+  42% {
     left: var(--shot-mid-x, 8%);
     bottom: calc(var(--shot-peak, 31%) + var(--lane-lift, 0%) + var(--playfield-rise));
+  }
+  70% {
+    left: calc(var(--shot-mid-x, 8%) + (var(--shot-end-x, -12%) - var(--shot-mid-x, 8%)) * 0.58);
+    bottom: calc((var(--shot-peak, 31%) + var(--shot-end, 24%)) * 0.52 + var(--lane-lift, 0%) + var(--playfield-rise));
   }
   100% {
     left: var(--shot-end-x, -12%);
@@ -536,8 +552,12 @@ body {
 
 @keyframes ball-out-shot {
   0% {
-    left: 23.5%;
+    left: var(--contact-x);
     bottom: calc(24% + var(--playfield-rise));
+  }
+  38% {
+    left: calc(var(--contact-x) - 3.5%);
+    bottom: calc(29% + var(--playfield-rise));
   }
   100% {
     left: 16%;
@@ -556,12 +576,15 @@ body {
 }
 
 @media (max-width: 560px) {
-  .page-shell {
-    padding: 0.75rem;
+  :root {
+    --contact-x: 22%;
+    --delivery-start-x: 79%;
+    --delivery-mid-x: 47%;
+    --delivery-end-x: 22%;
   }
 
-  .score-grid {
-    grid-template-columns: 1fr;
+  .page-shell {
+    padding: 0.75rem;
   }
 
   .powerbar-head {
@@ -596,46 +619,5 @@ body {
     right: 14.5%;
     bottom: calc(16% + var(--playfield-rise));
     transform: translateX(50%) scale(0.4);
-  }
-
-  @keyframes bowl-delivery {
-    from {
-      left: 79%;
-      bottom: calc(24% + var(--playfield-rise));
-    }
-    65% {
-      left: 47%;
-      bottom: calc(27% + var(--playfield-rise));
-    }
-    to {
-      left: 22%;
-      bottom: calc(24% + var(--playfield-rise));
-    }
-  }
-
-  @keyframes ball-shot-arc {
-    0% {
-      left: 22%;
-      bottom: calc(24% + var(--playfield-rise));
-    }
-    45% {
-      left: var(--shot-mid-x, 8%);
-      bottom: calc(var(--shot-peak, 31%) + var(--lane-lift, 0%) + var(--playfield-rise));
-    }
-    100% {
-      left: var(--shot-end-x, -12%);
-      bottom: calc(var(--shot-end, 24%) + var(--lane-lift, 0%) + var(--playfield-rise));
-    }
-  }
-
-  @keyframes ball-out-shot {
-    0% {
-      left: 22%;
-      bottom: calc(24% + var(--playfield-rise));
-    }
-    100% {
-      left: 13%;
-      bottom: calc(24% + var(--playfield-rise));
-    }
   }
 }
