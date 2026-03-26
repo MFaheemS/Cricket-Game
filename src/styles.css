@@ -499,17 +499,79 @@ body {
   border: 1px solid rgba(8, 82, 47, 0.14);
 }
 
-.game-over {
-  margin-top: 1rem;
-  padding: 1rem;
-  text-align: center;
-  border: 2px solid rgba(4, 106, 56, 0.28);
+.game-over-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.75);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 1rem;
+  backdrop-filter: blur(2px);
+  z-index: 1000;
 }
 
-.game-over h2 {
-  margin: 0;
+.game-over-content {
+  background: var(--card);
+  padding: 2rem;
+  border-radius: 1rem;
+  text-align: center;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+  animation: slideUp 0.5s ease-out;
+}
+
+.game-over-content h2 {
+  margin: 0 0 1rem 0;
   color: var(--warning);
   font-family: "Space Grotesk", "Outfit", sans-serif;
+  font-size: 1.8rem;
+}
+
+.game-over-content .score,
+.game-over-content .overs {
+  margin: 0.8rem 0;
+  font-size: 1.1rem;
+  color: var(--ink);
+}
+
+.game-over-content strong {
+  color: var(--accent-strong);
+  font-size: 1.3rem;
+}
+
+.restart-overlay-btn {
+  margin-top: 1.5rem;
+  background: linear-gradient(150deg, #1d5f8a 0%, #143b5b 100%);
+  color: #fff;
+  border: 0;
+  padding: 0.75rem 1.5rem;
+  border-radius: 0.65rem;
+  font-size: 1rem;
+  font-weight: 700;
+  font-family: "Space Grotesk", "Outfit", sans-serif;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, filter 0.2s ease;
+  box-shadow: 0 10px 18px rgba(18, 54, 82, 0.26);
+}
+
+.restart-overlay-btn:hover {
+  transform: translateY(-2px);
+  filter: saturate(1.06);
+  box-shadow: 0 15px 25px rgba(18, 54, 82, 0.35);
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(50px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 @keyframes bowl-delivery {

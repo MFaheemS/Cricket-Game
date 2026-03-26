@@ -488,11 +488,10 @@ export default function App() {
     <div className="page-shell">
       <header className="game-header">
         <div>
-          <h1>2D Cricket Power Bar Challenge</h1>
-          <p>CS-4032 Assignment #02</p>
+          <h1>cricket game</h1>
         </div>
         <button className="restart-btn" onClick={restartGame}>
-          Restart Game
+          Restart
         </button>
       </header>
 
@@ -578,6 +577,23 @@ export default function App() {
           <p className="commentary" aria-live="polite">
             {commentary}
           </p>
+
+          {gameOver && (
+            <div className="game-over-overlay">
+              <div className="game-over-content">
+                <h2>Innings Complete</h2>
+                <p className="score">
+                  Final Score: <strong>{runs}/{wickets}</strong>
+                </p>
+                <p className="overs">
+                  Overs Played: <strong>{oversText(ballsBowled)}</strong>
+                </p>
+                <button className="restart-overlay-btn" onClick={restartGame}>
+                  Play Again
+                </button>
+              </div>
+            </div>
+          )}
         </section>
       </main>
 
@@ -614,17 +630,7 @@ export default function App() {
         </div>
       </section>
 
-      {gameOver && (
-        <section className="game-over">
-          <h2>Innings Complete</h2>
-          <p>
-            Final Score: {runs}/{wickets}
-          </p>
-          <p>
-            Overs Played: {oversText(ballsBowled)}
-          </p>
-        </section>
-      )}
+
     </div>
   );
 }
