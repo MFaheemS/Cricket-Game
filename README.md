@@ -1,12 +1,12 @@
 <div align="center">
 
-# 🏏 Super Cricket
+# Super Cricket
 
-**A browser-based 2D cricket game with real-time probability mechanics, sprite animations, and dynamic commentary.**
+**A browser-based 2D cricket game with probability-based outcomes, sprite animation, and dynamic commentary.**
 
 ![Game Banner](screenshots/aggressive-batting.png)
 
-[![Live Demo](https://img.shields.io/badge/▶%20Live%20Demo-Play%20Now-1B4332?style=for-the-badge)](https://your-demo-link.com)
+[![Live Demo](https://img.shields.io/badge/Live%20Demo-Play%20Now-1B4332?style=for-the-badge)](https://your-demo-link.com)
 [![JavaScript](https://img.shields.io/badge/JavaScript-ES6+-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)](https://developer.mozilla.org/en-US/docs/Web/JavaScript)
 [![HTML5](https://img.shields.io/badge/HTML5-Canvas-E34F26?style=for-the-badge&logo=html5&logoColor=white)](https://developer.mozilla.org/en-US/docs/Web/HTML)
 [![CSS3](https://img.shields.io/badge/CSS3-Animations-1572B6?style=for-the-badge&logo=css3&logoColor=white)](https://developer.mozilla.org/en-US/docs/Web/CSS)
@@ -15,26 +15,26 @@
 
 ---
 
-## 🎮 What Is This?
+## What Is This?
 
-Super Cricket is a fully playable 2D cricket game that runs in the browser — no installs, no frameworks, no dependencies. The player faces a live bowler, selects a batting style, and times a shot using an animated power bar. Every ball outcome is determined by a real-time probability engine, not a random number generator.
+Super Cricket is a playable 2D cricket game that runs in the browser. You choose a batting style and time shots using a moving power bar. Ball outcomes come from a probability map tied to slider position.
 
-The project demonstrates **game logic design**, **sprite animation synchronisation**, **deterministic probability mapping**, and **clean UI/UX** — all in vanilla JS.
-
----
-
-## ✨ Features
-
-- 🎯 **Skill-based timing** — a moving slider over a segmented probability bar means every outcome depends on when you click
-- 🏏 **Two batting styles** — Aggressive (high-risk, high-reward) vs Defensive (consistent, lower ceiling)
-- 🎬 **Layered sprite animations** — bowler delivery, ball-in-flight arc, and batsman shot/dismissal all sync frame-perfectly
-- 📊 **Live scoreboard** — run rate, balls remaining, over counter, and last-ball result update in real time
-- 💬 **Dynamic commentary** — contextual text reacts to each outcome
-- 🔄 **Innings complete screen** — final score summary with instant replay option
+It highlights game logic design, sprite synchronization, deterministic outcome mapping, and clean UI in vanilla JavaScript.
 
 ---
 
-## 📸 Screenshots
+## Features
+
+- **Skill-based timing** via a segmented probability bar
+- **Two batting styles**: Aggressive and Defensive
+- **Layered sprite animation** for bowler, ball, and batsman
+- **Live scoreboard** with runs, wickets, overs, and last-ball result
+- **Dynamic commentary** based on outcomes
+- **Innings complete screen** with replay option
+
+---
+
+## Screenshots
 
 ### Aggressive Batting — Power Bar in Action
 > Higher boundary probability, higher wicket risk. The bar is wider in the red and green zones.
@@ -64,7 +64,7 @@ The project demonstrates **game logic design**, **sprite animation synchronisati
 
 ---
 
-## 🧠 How the Probability Engine Works
+## How the Probability Engine Works
 
 The power bar is divided into **7 segments**, each sized proportionally to its outcome weight:
 
@@ -78,7 +78,7 @@ The power bar is divided into **7 segments**, each sized proportionally to its o
 | 4 runs  | 0.18      | 0.10      |
 | 6 runs  | 0.13      | 0.03      |
 
-When the player clicks **Play Shot**, the slider's current position `s ∈ [0, 1]` is frozen. The engine scans cumulative ranges left-to-right and returns the first outcome where `s ≤ cumulative`. This means the result is **fully deterministic at click time** — the player can learn the bar and improve their timing.
+When the player clicks **Play Shot**, the slider position `s ∈ [0, 1]` is frozen. The engine scans cumulative ranges and returns the first outcome where `s ≤ cumulative`. Outcomes are deterministic at click time.
 
 ```js
 function resolveOutcome(sliderValue, probabilities) {
@@ -92,7 +92,7 @@ function resolveOutcome(sliderValue, probabilities) {
 
 ---
 
-## 🎬 Animation Architecture
+## Animation Architecture
 
 Three independent layers are synchronised per delivery:
 
@@ -107,14 +107,14 @@ Three independent layers are synchronised per delivery:
                                           [Commentary + scoreboard update]
 ```
 
-- **Bowler** — switches from idle → bowl row on delivery start
-- **Ball** — released at a configurable frame offset; follows a straight delivery path, then an arc keyframe path post-contact (parabolic for 4/6, low curve for singles, deflection curve for wickets)
-- **Batsman** — outcome maps to a sprite row (`out`, `six`, `four`, `defensive`); dismissal animation runs to final-frame hold before scene reset
-- **Stumps** — transition to broken-stump sprite on wicket, timed to ball contact frame
+- **Bowler** switches from idle to bowl on delivery start
+- **Ball** releases at a frame offset, travels to bat, then follows outcome-based arc animation
+- **Batsman** switches sprite row by outcome (`out`, `six`, `four`, `defensive`)
+- **Stumps** switch to broken state on wicket at contact timing
 
 ---
 
-## 🚀 Getting Started
+## Getting Started
 
 ```bash
 git clone https://github.com/your-username/super-cricket.git
@@ -123,11 +123,11 @@ cd super-cricket
 open index.html
 ```
 
-> No Node.js, no npm, no bundler. Pure HTML + CSS + JS.
+No Node.js, npm, or bundler required.
 
 ---
 
-## 🗂 Project Structure
+## Project Structure
 
 ```
 super-cricket/
@@ -145,7 +145,7 @@ super-cricket/
 
 ---
 
-## 🛠 Tech Stack
+## Tech Stack
 
 | Layer | Technology |
 |-------|-----------|
@@ -157,20 +157,20 @@ super-cricket/
 
 ---
 
-## 💡 Key Engineering Decisions
+## Key Engineering Decisions
 
 **Why deterministic probability instead of `Math.random()`?**
-Random outcomes remove player agency. A deterministic slider map means outcomes are reproducible and learnable — closer to real game feel where timing and decision-making matter.
+Deterministic mapping preserves player agency and rewards timing.
 
 **Why vanilla JS instead of a game engine?**
-Keeping the project dependency-free makes it instantly runnable, easy to audit, and a better demonstration of low-level game loop and animation concepts.
+It keeps the project lightweight, runnable anywhere, and easy to inspect.
 
 **Why synchronise animations to outcome resolution?**
-Resolving the outcome at visual contact timing (rather than on click) prevents score updates from appearing before the shot animation — a subtle detail that makes the game feel polished.
+Resolving outcomes at contact timing keeps visuals and scoring in sync.
 
 ---
 
-## 📄 License
+## License
 
 MIT — free to use, fork, and build on.
 
@@ -178,6 +178,6 @@ MIT — free to use, fork, and build on.
 
 <div align="center">
 
-Made with ☕ and a love for cricket
+Made with care and a love for cricket
 
 </div>
