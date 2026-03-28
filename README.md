@@ -6,7 +6,7 @@
 
 ![Game Banner](screenshots/aggressive-batting.png)
 
-[![Live Demo](https://img.shields.io/badge/Live%20Demo-Play%20Now-1B4332?style=for-the-badge)](https://your-demo-link.com)
+[![Live Demo](https://img.shields.io/badge/Live%20Demo-Play%20Now-1B4332?style=for-the-badge)](https://cricket-game-5hubgjaaf-mfaheems-projects-a5365ca7.vercel.app/)
 [![JavaScript](https://img.shields.io/badge/JavaScript-ES6+-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)](https://developer.mozilla.org/en-US/docs/Web/JavaScript)
 [![HTML5](https://img.shields.io/badge/HTML5-Canvas-E34F26?style=for-the-badge&logo=html5&logoColor=white)](https://developer.mozilla.org/en-US/docs/Web/HTML)
 [![CSS3](https://img.shields.io/badge/CSS3-Animations-1572B6?style=for-the-badge&logo=css3&logoColor=white)](https://developer.mozilla.org/en-US/docs/Web/CSS)
